@@ -191,3 +191,23 @@ optimal_k = find_optimal_k(X_train, Y_train, query)
 knn = KNeighborsClassifier(n_neighbors=optimal_k)
 knn.fit(X_train, Y_train)
 pred = knn.pred(X_test)
+"""
+Model Evaluation
+"""
+
+# Confusion Matrix
+plt.figure()
+cm = confusion_matrix(Y_test, pred)
+class_label = ["negative", "positive"]
+df_cm_test = pd.DataFrame(cm, index=class_label, columns=class_label)
+sns.heatmap(df_cm_test, annot=True, fmt="d")
+plt.title("Confusion Matrix for Test datas")
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+
+# classification report
+print(classification_report(Y_test, pred))
+
+# Accuracy
+print("The accuracy for the model with BOW encoding is ",
+      round(accuracy_score(Y_test, pred), 4))
