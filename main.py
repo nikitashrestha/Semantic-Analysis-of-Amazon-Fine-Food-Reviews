@@ -131,3 +131,63 @@ binary_bow_data = count_vect.fit_transform(binary=True)
 Scaling data
 """
 final_bow_np = StandardScaler(with_mean=False).fit_transform(binary_bow_data)
+
+"""
+Train-Test Split
+"""
+
+x = final_bow_np
+y = final['Score']
+
+X_train = final_bow_np[:math.ceil(len(final)*0.7)]
+X_test = final_bow_np[math.ceil(len(final)*0.7):]
+
+Y_train = y[:math.ceil(len(final)(0.7))]
+Y_test = y[math.ceil(len(final)(0.7)):]
+
+"""
+K-Nearest Neighbour
+"""
+
+
+def find_optimal_k(X_train, Y_train, query):
+    # creating odd list of K for KNN
+    neighbours = list(filter(lambda x: x % 2 != 0, query))
+
+    # list will hold cv scores
+    cv_scores = []
+
+    # perform 10-fold cross validation
+    for k in neighbors:
+        knn = KNeighborsClassifier(n_neighbors=k)
+        scores = cross_val_score(
+            knn, X_train, y_train, cv=10, scoring='accuracy')
+        cv_scores.append(scores.mean())
+
+    # changing to misclassification error
+    MSE = [1 - x for x in cv_scores]
+
+    # determining optimal k
+    optimal_k = neighbors[MSE.index(min(MSE))]
+    print('\nThe optimal number of neighbors is %d.' % nearest_k)
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(list(filter(lambda x: x % 2 != 0, myList)), MSE, color='blue', linestyle='dashed', marker='o',
+             markerfacecolor='red', markersize=10)
+    plt.title('Error Rate vs. K Value')
+    plt.xlabel('K')
+    plt.ylabel('Error Rate')
+
+    print("the misclassification error for each k value is : ", np.round(MSE, 3))
+
+    return nearest_k
+
+
+query = list(range(0, 50))
+
+optimal_k = find_optimal_k(X_train, Y_train, query)
+
+# K-NN with optimal K
+knn = KNeighborsClassifier(n_neighbors=optimal_k)
+knn.fit(X_train, Y_train)
+pred = knn.pred(X_test)
