@@ -60,6 +60,23 @@ print(df[df["Score"] > 3])
 """
 Data Preprocessing
 """
+
+# Removing neutral reviews
+df = df[df['Score'] != 3]
+
+# Converting Score values into class label either Posituve or Negative.
+
+
+def partition(x):
+    if x > 3:
+        return 'positive'
+    return 'negative'
+
+
+score_upd = df['Score']
+t = score_upd.map(partition)
+df['Score'] = t
+
 # Step 1: Sorting date for tie based splitting for model  train and test dataset
 df["Time"] = df["Time"].map(lambda t: datetime.datetime.fromtimestamp(
     int(t)).strftime('%Y-%m-%d %H:%M:%S'))
@@ -82,6 +99,19 @@ final = final_df[final_df["HelpfulnessNumerator"]
 
 final_X = final["Text"]
 final_Y = final["Score"]
+
+"""
+Reduce data for low computation cost
+
+# As data is huge, due to computation limitation we will randomly select data. we will try to pick data in a way so that it doesn't make data imbalance problem
+finalp = final[final.Score == 'positive']
+finalp = finalp.sample(frac=0.035, random_state=1)  # 0.055
+
+finaln = final[final.Score == 'negative']
+finaln = finaln.sample(frac=0.15, random_state=1)  # 0.25
+
+final = pd.concat([finalp, finaln], axis=0)
+"""
 
 # Step 4 : Converting all the words in the text to lowercase and removing punctuations or html tags if any.
 # Also we perform:
