@@ -1,5 +1,5 @@
 # Semantic-Analysis-of-Amazon-Fine-Food-Reviews
-Simple K-NN classifier to classify positive and negative reviews using BOW encodings.
+Simple K-NN classifier to classify positive and negative reviews using BOW encodings. Please go through this b log for more details. https://ai.plainenglish.io/semantic-analysis-of-amazon-fine-food-reviews-8225fe11ddb1
 
 ## Project Setup
 - Clone the repository.
